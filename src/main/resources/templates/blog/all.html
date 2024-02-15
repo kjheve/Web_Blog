@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>게시글 목록</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    .main-wrap h3 {
+      height: 50px;
+      line-height: 50px;
+      text-align: center;
+      background-color: lightblue;
+    }
+
+    table {
+      width: 100%;
+      height: 100%;
+    }
+
+    thead {
+      background-color: lightgoldenrodyellow;
+    }
+
+    tr {
+      display: flex;
+    }
+
+    tr .ck {
+      flex: 0.1;
+    }
+
+    tr .t {
+      flex: 1;
+    }
+
+    tr td {
+      flex: 0.3;
+      text-align: center;
+      font-weight: bold;
+      border: 0.5px solid black;
+    }
+
+    .btn-wrap {
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .row:hover {
+      background-color: rgb(133, 167, 179);
+    }
+  </style>
+</head>
+
+<body>
+  <form id="frm" action="" method="">
+    <div class="main-wrap">
+      <h3>게시글 목록</h3>
+      <table>
+        <thead>
+          <tr>
+            <td class="ck">　<input type="checkbox" id="selectAll">　</td>
+            <td>글번호</td>
+            <td class="t">제목</td>
+            <td>작성자</td>
+            <td>작성일</td>
+          </tr>
+        </thead>
+        <tbody id="rows">
+          <tr class="row" th:each="blog :${list}" th:data-blog-id="${blog.blogId}">
+            <td class="ck"><input type="checkbox" name="bids" th:value="${blog.blogId}"></td>
+            <td th:text="${blog.blogId}"></td>
+            <td class="t" th:text="${blog.title}"></td>
+            <td th:text="${blog.writer}"></td>
+            <td th:text="${#temporals.format(blog.cdate, 'yyyy-MM-DD')}"></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="btn-wrap">
+        <button id="delBtn" type="submit">삭제</button>
+        <button id="addBtn" type="button">작성</button>
+      </div>
+  </form>
+
+  <script>
+    // 버튼 클릭시 detail(디테일)화면
+    const $rows = document.getElementById('rows');
+    $rows.addEventListener('click', evt => {
+      // 1) check 박스 제외
+      if (evt.target.getAttribute('type') == 'checkbox' && evt.target.tagName === 'INPUT') { return; }
+      // 2) check 박스가 속한 td요소 제외
+      if (evt.target.tagName == 'TD' && evt.target.classList.contains('ck')) { return; }
+
+      const $row = evt.target.closest('.row');
+      const blogId = $row.dataset.blogId;
+      location.href = `/blog/${blogId}/detail`; // GET, http://localhost:9080/blog/게시물번호/add
+    });
+
+    // 작성 버튼 클릭시 게시물 작성 화면으로 가기
+    const $addBtn = document.getElementById('addBtn');
+    $addBtn.addEventListener('click', evt => {
+      location.href = '/blog/add'; // GET, http://localhost:9080/blog/add
+    });
+  </script>
+
+</body>
+
+</html>

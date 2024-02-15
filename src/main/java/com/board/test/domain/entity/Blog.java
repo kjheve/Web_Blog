@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class Blog {
-  private Long blog_id;          // BLOG_ID	NUMBER(10,0)      // 게시글 id
+  private Long blogId;          // BLOG_ID	NUMBER(10,0)      // 게시글 id
   private String title;          // TITLE	VARCHAR2(90 BYTE)   // 게시글 제목
   private String bcontent;       // BCONTENT	CLOB            // 게시글 내용
   private String writer;         // WRITER	VARCHAR2(15 BYTE) // 작성자

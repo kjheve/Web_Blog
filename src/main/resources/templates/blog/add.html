@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>게시판 작성</title>
+  <link rel="stylesheet" href="/css/add.css">
+</head>
+
+<body>
+  <div class="main-wrap">
+    <h3>게시물 작성</h3>
+    <form action="/blog/add" method="POST">
+      <div class="writer-wrap">
+        <div><label for="title">제목</label><input id="title" name="title" type="text"></div>
+        <div><label for="writer">작성자</label><input id="writer" name="writer" type="text"></div>
+      </div>
+      <div>
+        <div><label for="bcontent">내용</label></div>
+        <textarea name="bcontent" id="bcontent" rows="10"></textarea>
+      </div>
+      <div class="btn-wrap">
+        <input type="button" value="목록" onclick="location.href='/blog'">
+        <input type="submit" value="저장">
+        <input type="reset" value="취소">
+      </div>
+    </form>
+  </div>
+</body>
+
+</html>
