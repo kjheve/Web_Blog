@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,19 +38,27 @@ public class BlogController {
   public String add(@RequestParam("title") String title,
                     @RequestParam("writer") String writer,
                     @RequestParam("bcontent") String bcontent,
-                    Model model) {
+                    Model model,
+                    RedirectAttributes redirectAttributes) {
+    
     Blog blog = new Blog();
     blog.setTitle(title);
     blog.setWriter(writer);
     blog.setBcontent(bcontent);
-    Long blogId = blogSVC.save(blog);
-    
-    // ★ 2-2) 게시판 조회
-    Optional<Blog> findedBlog = blogSVC.findByID(blogId);
-    blog = findedBlog.orElseThrow();
 
-    model.addAttribute("blog", blog);
-    return "blog/detailForm";
+    Long blogId = blogSVC.save(blog);
+
+
+//    // ★ 2-2) 게시판 조회 -> 새로고침시 POST 요청이 계속 되어 아래와 같이
+//    Optional<Blog> findedBlog = blogSVC.findByID(blogId);
+//    blog = findedBlog.orElseThrow();
+//    model.addAttribute("blog", blog);
+//    return "blog/detailForm";
+
+    // ★ 2-3) POST 요청시 redirect를 이용하여 경로변수로 설정
+    // add() 매개변수 RedirectAttributes 추가
+    redirectAttributes.addAttribute("bid", blogId);
+    return "redirect:/blog/{bid}/detail";
   }
 
   // ★ 4) 조회
@@ -60,6 +69,15 @@ public class BlogController {
     model.addAttribute("blog", blog);
 
     return "blog/detailForm";
+  }
+
+  // ★ 5) 삭제
+  @GetMapping("/{bid}/del")
+  public String delete(@PathVariable("bid") Long blogId) {
+    // 게시글 삭제 처리
+    blogSVC.deleteById(blogId);
+
+    return "redirect:/blog"; // 게시글 목록으로
   }
 
 

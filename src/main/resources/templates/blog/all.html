@@ -64,7 +64,7 @@
       <table>
         <thead>
           <tr>
-            <td class="ck">　<input type="checkbox" id="selectAll">　</td>
+            <td class="ck"><input type="checkbox" id="selectAll"></td>
             <td>글번호</td>
             <td class="t">제목</td>
             <td>작성자</td>
@@ -77,7 +77,7 @@
             <td th:text="${blog.blogId}"></td>
             <td class="t" th:text="${blog.title}"></td>
             <td th:text="${blog.writer}"></td>
-            <td th:text="${#temporals.format(blog.cdate, 'yyyy-MM-DD')}"></td>
+            <td th:text="${#temporals.format(blog.cdate, 'yyyy년M월dd일')}"></td>
           </tr>
         </tbody>
       </table>

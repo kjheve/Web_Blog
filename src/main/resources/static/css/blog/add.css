@@ -1,0 +1,26 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+.main-wrap {
+  width: 100%;
+  height: 100%;
+}
+.main-wrap h3 {
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  background-color: lightblue;
+}
+#bcontent {
+  width: 100%;
+  height: 100%;
+}
+.btn-wrap {
+  display: flex;
+  justify-content: space-around;
+}
+.writer-wrap {
+  display: flex;
+  justify-content: space-between;
+}

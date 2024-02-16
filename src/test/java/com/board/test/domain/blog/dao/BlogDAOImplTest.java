@@ -2,6 +2,7 @@ package com.board.test.domain.blog.dao;
 
 import com.board.test.domain.entity.Blog;
 import lombok.extern.slf4j.Slf4j;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,5 +49,15 @@ class BlogDAOImplTest {
       log.info("blog={}", blog);
     }
     log.info("size={}", list.size());
+  }
+
+  @Test
+  @DisplayName("1건 삭제")
+  void deleteById() {
+    int delRowCnt = blogDAO.deleteById(1L);
+    log.info("1이뜨면 1건삭제={}", delRowCnt);
+    // delRowCnt의 값이 1과 동일한지 확인
+    Assertions.assertThat(delRowCnt).isEqualTo(1);
+
   }
 }

@@ -1,68 +1,73 @@
--------- »èÁ¦
--- Å×ÀÌºí »èÁ¦
+-------- ì‚­ì œ
+-- í…Œì´ë¸” ì‚­ì œ
 drop table blog;
--- ½ÃÄö½º »èÁ¦
+-- ì‹œí€€ìŠ¤ ì‚­ì œ
 drop sequence blog_blog_id_seq;
 
 ---------
---»óÇ°°ü¸®
+--ìƒí’ˆê´€ë¦¬
 --------
 create table blog(
-    blog_id     number(10),  -- °Ô½Ã±Ûid
-    title       varchar(90), -- Á¦¸ñ
-    bcontent    clob,        -- ³»¿ë
-    writer      varchar(15), -- ÀÛ¼ºÀÚ
-    cdate       timestamp,   -- ÀÛ¼º³¯Â¥
-    udate       timestamp    -- ¼öÁ¤³¯Â¥
+    blog_id     number(10),  -- ê²Œì‹œê¸€id
+    title       varchar(90), -- ì œëª©
+    bcontent    clob,        -- ë‚´ìš©
+    writer      varchar(15), -- ì‘ì„±ì
+    cdate       timestamp,   -- ì‘ì„±ë‚ ì§œ
+    udate       timestamp    -- ìˆ˜ì •ë‚ ì§œ
 );
---±âº»Å°
+--ê¸°ë³¸í‚¤
 alter table blog add constraint blog_blog_id primary key(blog_id);
 
---½ÃÄö½º»ı¼º
+--ì‹œí€€ìŠ¤ìƒì„±
 create sequence blog_blog_id_seq;
 
---µğÆúÆ®
-alter table blog modify cdate default systimestamp; -- ¿î¿µÃ¼Á¦ ÀÏ½Ã¸¦ ±âº»°ªÀ¸·Î
-alter table blog modify udate default systimestamp; -- ¿î¿µÃ¼Á¦ ÀÏ½Ã¸¦ ±âº»°ªÀ¸·Î
+--ë””í´íŠ¸
+alter table blog modify cdate default systimestamp; -- ìš´ì˜ì²´ì œ ì¼ì‹œë¥¼ ê¸°ë³¸ê°’ìœ¼ë¡œ
+alter table blog modify udate default systimestamp; -- ìš´ì˜ì²´ì œ ì¼ì‹œë¥¼ ê¸°ë³¸ê°’ìœ¼ë¡œ
 
---»ı¼º--
+--í•„ìˆ˜ê°’ë“¤ NOT NULL
+alter table blog modify title not null;
+alter table blog modify writer not null;
+alter table blog modify bcontent not null;
+
+--ìƒì„±--
 insert into blog(blog_id, title, bcontent, writer)
-     values(blog_blog_id_seq.nextval, 'ÇÏÀÌ', '³Ã¹«', '±èÇÏÀÌ');
+     values(blog_blog_id_seq.nextval, 'í•˜ì´', 'ëƒ‰ë¬´', 'ê¹€í•˜ì´');
 
 insert into blog(blog_id, title, bcontent, writer)
-     values(blog_blog_id_seq.nextval, 'TESTÀÓ', 'Á¦°ğ³»', 'Å×½ºÆ®');
+     values(blog_blog_id_seq.nextval, 'TESTì„', 'ì œê³§ë‚´', 'í…ŒìŠ¤íŠ¸');
 
 insert into blog(blog_id, title, bcontent, writer)
-     values(blog_blog_id_seq.nextval, 'ÀÚ¹Ù', '°øºÎÁß', 'ÇĞ»ı');
-     
+     values(blog_blog_id_seq.nextval, 'ìë°”', 'ê³µë¶€ì¤‘', 'í•™ìƒ');
+
 commit;
 
 
-------Äõ¸®¹® ÁØºñ
---¸ñ·Ï
+------ì¿¼ë¦¬ë¬¸ ì¤€ë¹„
+--ëª©ë¡
 select blog_id, title, bcontent, writer, cdate, udate
   from blog
   order by blog_id desc;
-  
+
 select count(*) from blog;
-  
---´Ü°ÇÁ¶È¸
+
+--ë‹¨ê±´ì¡°íšŒ
 select blog_id, title, bcontent, writer, cdate, udate
   from blog
   where blog_id = 1;
-  
---´Ü°Ç¼öÁ¤
+
+--ë‹¨ê±´ìˆ˜ì •
 update blog
-  set title = 'DB°øºÎÁß',
-      bcontent = 'SQL°øºÎÇÏÀÚ',
-      writer = '´ëÇĞ»ı',
+  set title = 'DBê³µë¶€ì¤‘',
+      bcontent = 'SQLê³µë¶€í•˜ì',
+      writer = 'ëŒ€í•™ìƒ',
       udate = systimestamp
   where blog_id = 2;
-  
---´Ü°Ç»èÁ¦
+
+--ë‹¨ê±´ì‚­ì œ
 delete from blog
   where blog_id = 1;
---¿©·¯°Ç »èÁ¦
+--ì—¬ëŸ¬ê±´ ì‚­ì œ
 delete from blog
   where blog_id in ( 1, 2, 3 );
 

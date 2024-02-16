@@ -32,4 +32,10 @@ public class BlogSVCImpl implements BlogSVC{
   public List<Blog> findAll() {
     return blogDAO.findAll();
   }
+
+  // 4) 1건 삭제
+  @Override
+  public int deleteById(Long blogId) {
+    return blogDAO.deleteById(blogId);
+  }
 }

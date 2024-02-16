@@ -56,7 +56,7 @@ public class BlogDAOImpl implements BlogDAO {
     }
   }
 
-  // ★2) 전체 조회----------------------------------------------
+  // ★3) 전체 조회----------------------------------------------
   @Override
   public List<Blog> findAll() {
     StringBuffer sql = new StringBuffer();
@@ -66,6 +66,19 @@ public class BlogDAOImpl implements BlogDAO {
 
     List<Blog> list = template.query(sql.toString(), BeanPropertyRowMapper.newInstance(Blog.class));
     return list;
+  }
+
+  // ★4) 1건 삭제----------------------------------------------
+  @Override
+  public int deleteById(Long blogId) {
+    StringBuffer sql = new StringBuffer();
+    sql.append("delete from blog ");
+    sql.append("where blog_id = :blogId ");
+
+    Map<String, Long> map = Map.of("blogId", blogId);
+    int deleteRowCnt = template.update(sql.toString(), map);
+
+    return deleteRowCnt;
   }
 
 

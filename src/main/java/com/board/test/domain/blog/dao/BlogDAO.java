@@ -15,4 +15,7 @@ public interface BlogDAO {
   // ★ 3) 전체 조회(목록)
   List<Blog> findAll();
 
+  // ★ 4) 1건 삭제
+  int deleteById(Long blogId);
+
 }
