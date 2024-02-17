@@ -5,9 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>게시판 작성</title>
-  <!-- <link rel="stylesheet" href="/css/add.css"> -->
-  <link rel="stylesheet" href="/css/blog/add.css">
-
+   <link rel="stylesheet" href="/css/blog/add.css">
 </head>
 
 <body>
@@ -15,12 +13,23 @@
     <h3>게시물 작성</h3>
     <form action="/blog/add" method="POST">
       <div class="writer-wrap">
-        <div><label for="title">제목</label><input id="title" name="title" type="text"></div>
-        <div><label for="writer">작성자</label><input id="writer" name="writer" type="text"></div>
+        <div>
+          <label for="title">제목</label>
+          <input id="title" name="title" type="text" placeholder="한,영,숫자(30자이내)" required>
+          <span id="errTitle" class="err-msg">errTitle</span>
+        </div>
+        <div>
+          <span id="errWriter" class="err-msg">errWriter</span>
+          <label for="writer">작성자</label>
+          <input id="writer" name="writer" type="text" placeholder="한,영,숫자,'_','-'(6자이내)" required>
+        </div>
       </div>
       <div>
-        <div><label for="bcontent">내용</label></div>
-        <textarea name="bcontent" id="bcontent" rows="10"></textarea>
+        <div>
+          <label for="bcontent">내용</label>
+          <span id="errBcontent" class="err-msg">errBcontent</span>
+        </div>
+        <textarea name="bcontent" id="bcontent" rows="10" placeholder="내용 입력" required></textarea>
       </div>
       <div class="btn-wrap">
         <input type="button" value="목록" onclick="location.href='/blog'">
@@ -30,5 +39,67 @@
     </form>
   </div>
 </body>
+
+<script>
+// 제목 유효성 검사------------------------------------------------
+  title.addEventListener('focus', evt => {
+    evt.target.style.backgroundColor = 'lightyellow';
+  });
+  title.addEventListener('blur', evt => {
+    evt.target.style.backgroundColor = 'initial';
+    // 유효성 체크 (정규표현식)
+    const pattern = /^[a-zA-Z0-9ㄱ-ㅎ가-힣\s]{1,30}$/;
+    if (pattern.test(evt.target.value)) {
+      errTitle.classList.remove('on');
+      errTitle.textContent = '';
+    } else {
+      errTitle.classList.add('on');
+      errTitle.textContent = '특수문자 입력안됨(길이30자이내)';
+      // 수정해야 빠져나오게 하기
+      evt.target.focus();
+      evt.target.select();
+    }
+  });
+  // 작성자 유효성 검사------------------------------------------------
+  writer.addEventListener('focus', evt => {
+    evt.target.style.backgroundColor = 'lightyellow';
+  });
+  writer.addEventListener('blur', evt => {
+    evt.target.style.backgroundColor = 'initial';
+    // 유효성 체크 (정규표현식)
+    const pattern = /^[a-zA-Z0-9ㄱ-ㅎ가-힣_\-]{1,6}$/;
+    if (pattern.test(evt.target.value)) {
+      errWriter.classList.remove('on');
+      errWriter.textContent = '';
+    } else {
+      errWriter.classList.add('on');
+      errWriter.textContent = '특문 \'-\',\'_\'만 사용가능(길이6자이내)';
+      // 수정해야 빠져나오게 하기
+      evt.target.focus();
+      evt.target.select();
+    }
+  });
+  
+  // 작성자 유효성 검사------------------------------------------------
+  bcontent.addEventListener('focus', evt => {
+    evt.target.style.backgroundColor = 'lightyellow';
+  });
+  bcontent.addEventListener('blur', evt => {
+    evt.target.style.backgroundColor = 'initial';
+    // 유효성 체크 (정규표현식)
+    const pattern = /.+/;
+    if (pattern.test(evt.target.value)) {
+      errBcontent.classList.remove('on');
+      errBcontent.textContent = '';
+    } else {
+      errBcontent.classList.add('on');
+      errBcontent.textContent = '1글자 이상 입력';
+      // 수정해야 빠져나오게 하기
+      evt.target.focus();
+      evt.target.select();
+    }
+  });
+
+</script>
 
 </html>

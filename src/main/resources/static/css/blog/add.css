@@ -24,3 +24,22 @@
   display: flex;
   justify-content: space-between;
 }
+textarea {
+  padding: 5px;
+}
+/* 유효성 안내 메세지 */
+::placeholder {
+  color: red;
+  font-size: 0.8em;
+  font-style: italic;
+}
+/* 에러메세지 출력 */
+.err-msg {
+  display: none;
+  color: red;
+  font-size: 0.8em;
+  font-style: italic;
+}
+.err-msg.on {
+  display: inline-block;
+}
