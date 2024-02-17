@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,9 +56,48 @@ class BlogDAOImplTest {
   @DisplayName("1건 삭제")
   void deleteById() {
     int delRowCnt = blogDAO.deleteById(1L);
-    log.info("1이뜨면 1건삭제={}", delRowCnt);
+    log.info("삭제 건수 확인={}", delRowCnt);
     // delRowCnt의 값이 1과 동일한지 확인
     Assertions.assertThat(delRowCnt).isEqualTo(1);
 
+  }
+
+  @Test
+  @DisplayName("여러건 삭제")
+  void deleteByIds() {
+    List<Long> bids = new ArrayList<>();
+    bids.add(1L);
+    bids.add(2L);
+    bids.add(3L);
+    int delRowCnts = blogDAO.deleteByIds(bids);
+    log.info("삭제 건수 확인={}", delRowCnts);
+    Assertions.assertThat(delRowCnts).isEqualTo(bids.size());
+  }
+
+  @Test
+  @DisplayName("게시물 수정")
+  void updateById() {
+
+    Long blogId = 1L;
+    Blog blog = new Blog();
+    blog.setTitle("애국가1절");
+    blog.setBcontent("동해물과백두산이");
+    blog.setWriter("애국자");
+
+    int updateRowCnt = blogDAO.updateById(blogId, blog);
+    log.info("updateRowCnt={}", updateRowCnt);
+
+    if(updateRowCnt == 0) {
+      Assertions.fail("수정 내역 없음");
+    }
+    Optional<Blog> optionalProduct = blogDAO.findByID(blogId);
+    if (optionalProduct.isPresent()) {
+      Blog findedProduct = optionalProduct.get();
+      Assertions.assertThat(findedProduct.getTitle()).isEqualTo("애국가1절");
+      Assertions.assertThat(findedProduct.getBcontent()).isEqualTo("동해물과백두산이");
+      Assertions.assertThat(findedProduct.getWriter()).isEqualTo("애국자");
+    } else {
+      Assertions.fail("수정할 게시물이 없습니다");
+    }
   }
 }

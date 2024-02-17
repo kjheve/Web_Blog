@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>$Title$</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    .main-wrap {
+      width: 100%;
+      height: 100%;
+    }
+
+    .main-wrap h2 {
+      height: 50px;
+      line-height: 50px;
+      text-align: center;
+      background-color: lightblue;
+    }
+
+    #bcontent {
+      width: 100%;
+      height: 100%;
+    }
+
+    .btn-wrap {
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .writer-wrap {
+      display: flex;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="main-wrap">
+    <h2>게시물 수정</h2>
+    <form action="#" method="POST">
+      <div class="writer-wrap">
+        <div><label for="blogId">글번호</label><input id="blogId" type="text" th:value="${blog.blogId}" disabled></div>
+        <div><label for="title">제목</label><input id="title" name="title" type="text" th:value="${blog.title}"></div>
+        <div><label for="writer">작성자</label><input id="writer" name="writer" type="text" th:value="${blog.writer}"></div>
+      </div>
+      <div>
+        <div><label for="bcontent">내용</label></div>
+        <textarea name="bcontent" id="bcontent" rows="10" th:text="${blog.bcontent}"></textarea>
+      </div>
+      <div class="btn-wrap">
+        <input id="listBtn" type="button" value="목록">
+        <input id="saveBtn" type="submit" value="저장">
+        <input id="resetBtn" type="reset" value="취소">
+      </div>
+    </form>
+  </div>
+
+  <script>
+    // 목록 클릭 이벤트
+    document.getElementById('listBtn').addEventListener('click', evt => {
+      location.href = '/blog';
+    });
+  </script>
+</body>
+
+</html>

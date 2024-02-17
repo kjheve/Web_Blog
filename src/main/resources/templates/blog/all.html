@@ -58,7 +58,7 @@
 </head>
 
 <body>
-  <form id="frm" action="" method="">
+  <form id="frm" action="/blog/del" method="POST">
     <div class="main-wrap">
       <h3>게시글 목록</h3>
       <table>
@@ -85,10 +85,11 @@
         <button id="delBtn" type="submit">삭제</button>
         <button id="addBtn" type="button">작성</button>
       </div>
+    </div>
   </form>
 
   <script>
-    // 버튼 클릭시 detail(디테일)화면
+    // tbody(.rows) 부분 클릭시 detail(디테일)화면으로 가게하기 -----------------------------------
     const $rows = document.getElementById('rows');
     $rows.addEventListener('click', evt => {
       // 1) check 박스 제외
@@ -101,10 +102,31 @@
       location.href = `/blog/${blogId}/detail`; // GET, http://localhost:9080/blog/게시물번호/add
     });
 
-    // 작성 버튼 클릭시 게시물 작성 화면으로 가기
+    // 삭제 버튼 submit 이벤트 -----------------------------------
+    const $frm = document.getElementById('frm');
+    $frm.addEventListener('submit', evt => {
+      evt.preventDefault(); // submit 중지
+      if(!confirm('삭제하시겠습니까?')) { return; }
+      evt.target.submit(); // submit 재실행
+    });
+
+    // 작성 버튼 클릭시 게시물 작성 화면으로 가기 -----------------------------------
     const $addBtn = document.getElementById('addBtn');
     $addBtn.addEventListener('click', evt => {
       location.href = '/blog/add'; // GET, http://localhost:9080/blog/add
+    });
+
+    // thead의 체크박스 선택시 전체선택
+    const $selectAll = document.getElementById('selectAll');
+    $selectAll.addEventListener('change', evt => {
+      // nodelist를 배열로 변경
+      const $arr = Array.from(document.querySelectorAll('#rows .row input[type=checkbox]'));
+      const isAllchecked = $arr.every(ele => ele.checked == true);
+      if(isAllchecked) {
+        $arr.forEach(ele => ele.checked = false);
+      } else {
+        $arr.forEach(ele => ele.checked = true);
+      }
     });
   </script>
 

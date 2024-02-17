@@ -81,5 +81,39 @@ public class BlogDAOImpl implements BlogDAO {
     return deleteRowCnt;
   }
 
+  // ★5) 여러건 삭제----------------------------------------------
+  @Override
+  public int deleteByIds(List<Long> blogIds) {
+    StringBuffer sql = new StringBuffer();
+    sql.append("delete from blog ");
+    sql.append("where blog_id in (:blogIds) ");
+
+    Map<String, List<Long>> map = Map.of("blogIds", blogIds);
+    int delRowCnts = template.update(sql.toString(), map);
+
+    return delRowCnts;
+  }
+
+  // ★6) 수정----------------------------------------------
+  @Override
+  public int updateById(Long blogId, Blog blog) {
+    StringBuffer sql = new StringBuffer();
+    sql.append("update blog ");
+    sql.append("set title = :title, ");
+    sql.append("    bcontent = :bcontent, ");
+    sql.append("    writer = :writer, ");
+    sql.append("    udate = default ");
+    sql.append("where blog_id = :blogId ");
+
+    SqlParameterSource param = new MapSqlParameterSource()
+        .addValue("title", blog.getTitle())
+        .addValue("bcontent", blog.getBcontent())
+        .addValue("writer", blog.getWriter())
+        .addValue("blogId", blogId);
+    int updateRowCnt = template.update(sql.toString(), param);
+
+    return updateRowCnt;
+  }
+
 
 }

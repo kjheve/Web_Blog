@@ -17,4 +17,10 @@ public interface BlogSVC {
 
   // 4) 1건 삭제
   int deleteById(Long blogId);
+
+  // 5) 여러건 삭제
+  int deleteByIds(List<Long> blogIds);
+
+  // 6) 수정
+  int updateById(Long blogId, Blog blog);
 }

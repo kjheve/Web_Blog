@@ -38,4 +38,16 @@ public class BlogSVCImpl implements BlogSVC{
   public int deleteById(Long blogId) {
     return blogDAO.deleteById(blogId);
   }
+
+  // 5) 여러건 삭제
+  @Override
+  public int deleteByIds(List<Long> blogIds) {
+    return blogDAO.deleteByIds(blogIds);
+  }
+
+  // 6) 수정
+  @Override
+  public int updateById(Long blogId, Blog blog) {
+    return blogDAO.updateById(blogId, blog);
+  }
 }

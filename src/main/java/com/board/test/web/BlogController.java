@@ -2,7 +2,6 @@ package com.board.test.web;
 
 import com.board.test.domain.blog.svc.BlogSVC;
 import com.board.test.domain.entity.Blog;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -34,20 +33,18 @@ public class BlogController {
   }
   
   // ★ 2) 게시판 등록 처리
-  @PostMapping("/add") // Post, http://localhost:9080/blog/add
+  @PostMapping("/add") // add.html의 Post요청시, http://localhost:9080/blog/add
   public String add(@RequestParam("title") String title,
                     @RequestParam("writer") String writer,
                     @RequestParam("bcontent") String bcontent,
                     Model model,
                     RedirectAttributes redirectAttributes) {
-    
     Blog blog = new Blog();
     blog.setTitle(title);
     blog.setWriter(writer);
     blog.setBcontent(bcontent);
 
     Long blogId = blogSVC.save(blog);
-
 
 //    // ★ 2-2) 게시판 조회 -> 새로고침시 POST 요청이 계속 되어 아래와 같이
 //    Optional<Blog> findedBlog = blogSVC.findByID(blogId);
@@ -80,7 +77,41 @@ public class BlogController {
     return "redirect:/blog"; // 게시글 목록으로
   }
 
+  // ★ 6) 여러건 삭제
+  @PostMapping("/del") // all.html의 POST요청시, http://localhost:9080/blog/del
+  public String deletedByIds(@RequestParam("bids") List<Long> bids) {
+    blogSVC.deleteByIds(bids);
 
+    return "redirect:/blog";
+  }
+
+  // ★ 7) 게시판 수정 양식
+  @GetMapping("/{bid}/edit")
+  public String updateForm(@PathVariable("bid") Long blogId, Model model) {
+    Optional<Blog> modifiedBlog = blogSVC.findByID(blogId); // 수정할 게시글 번호
+    Blog findBlog = modifiedBlog.orElseThrow(); // 게시글 번호의 정보 찾아오기
+    model.addAttribute("blog", findBlog); // Model에 속성이름으로 불러오기
+
+    return "blog/updateForm";
+  }
+  
+  // ★ 8) 수정 처리
+  @PostMapping("/{bid}/edit")
+  public String update(@PathVariable("bid") Long blogId,
+                       @RequestParam("title") String title,
+                       @RequestParam("bcontent") String bcontent,
+                       @RequestParam("writer") String writer,
+                       RedirectAttributes redirectAttributes) {
+    Blog blog = new Blog();
+    blog.setTitle(title);
+    blog.setBcontent(bcontent);
+    blog.setWriter(writer);
+
+    blogSVC.updateById(blogId, blog);
+
+    redirectAttributes.addAttribute("bid", blogId);
+    return "redirect:/blog/{bid}/detail";
+  }
 
   
 }

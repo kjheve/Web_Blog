@@ -18,7 +18,7 @@
   height: 50px;
   line-height: 50px;
   text-align: center;
-  background-color: lightblue;
+  background-color: rgb(100, 150, 160);
 }
 #bcontent {
   width: 100%;
@@ -37,7 +37,7 @@
 
 <body>
   <div class="main-wrap">
-    <h2 id="title" type="text" th:text="${blog.title}"></h2>
+    <h2 id="title" th:text="${blog.title}"></h2>
     <form action="#" method="POST">
       <div class="writer-wrap">
         <div><label for="blogId">글번호</label><input id="blogId" type="text" th:value="${blog.blogId}" disabled></div>
@@ -61,22 +61,27 @@
 
   <script>
     const $listBtn = document.getElementById('listBtn'); // 목록버튼
-    // 수정 버튼
+    const $updateBtn = document.getElementById('updateBtn');// 수정 버튼
     const $deleteBtn = document.getElementById("deleteBtn"); // 삭제 버튼
-    
+    const bid = document.getElementById('blogId').value; // blogId의 값 bid
+
     // 목록 클릭 이벤트
     $listBtn.addEventListener('click', evt => {
       location.href = '/blog';
     });
 
     // 수정 클릭 이벤트
+    $updateBtn.addEventListener('click', evt => {
+      // const bid = document.getElementById('blogId').value;
+      location.href = `/blog/${bid}/edit`;
+    });
 
     // 삭제 클릭 이벤트
     $deleteBtn.addEventListener('click', evt => {
       if(!confirm('삭제 하시겠습니까?')) {
         return; // 아니오(!false) 입력시 true로 되어 return
       }
-      const bid = document.getElementById('blogId').value;
+      // const bid = document.getElementById('blogId').value;
       location.href = `/blog/${bid}/del`;
     });
 
