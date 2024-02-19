@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>게시글 목록</title>
+  <title>게시판 글목록</title>
   <style>
     * {
       margin: 0;
@@ -52,11 +52,24 @@
     }
 
     .row:hover {
-      background-color: rgb(133, 167, 179);
+      background-color: rgb(123, 200, 225)
     }
 
     td {
       padding: 10px 0;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      background-color: lightblue;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: rgb(123, 200, 225);
     }
   </style>
 </head>
@@ -64,15 +77,15 @@
 <body>
   <form id="frm" action="/blog/del" method="POST">
     <div class="main-wrap">
-      <h3>게시글 목록</h3>
+      <h3 th:text="#{title.blog.list}">게시글 목록</h3>
       <table>
         <thead>
           <tr>
             <td class="ck"><input type="checkbox" id="selectAll"></td>
-            <td>글번호</td>
-            <td class="t">제목</td>
-            <td>작성자</td>
-            <td>작성일</td>
+            <td th:text="#{label.blog.blogId}">글번호</td>
+            <td th:text="#{label.blog.title}" class="t">제목</td>
+            <td th:text="#{label.blog.writer}">작성자</td>
+            <td th:text="#{label.blog.cdate}">작성일</td>
           </tr>
         </thead>
         <tbody id="rows">
@@ -86,8 +99,8 @@
         </tbody>
       </table>
       <div class="btn-wrap">
-        <button id="delBtn" type="submit">삭제</button>
-        <button id="addBtn" type="button">작성</button>
+        <button id="delBtn" type="submit" th:value="#{button.delete}">삭제</button>
+        <button id="addBtn" type="button" th:value="#{button.add}">작성</button>
       </div>
     </div>
   </form>

@@ -43,3 +43,15 @@ textarea {
 .err-msg.on {
   display: inline-block;
 }
+.btn-wrap * {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: lightblue;
+  color: white;
+  cursor: pointer;
+}
+
+.btn-wrap *:hover {
+  background-color: rgb(123, 200, 225);
+}

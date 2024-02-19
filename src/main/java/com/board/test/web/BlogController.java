@@ -2,6 +2,8 @@ package com.board.test.web;
 
 import com.board.test.domain.blog.svc.BlogSVC;
 import com.board.test.domain.entity.Blog;
+import com.board.test.web.form.blog.AddForm;
+import com.board.test.web.form.blog.UpdateForm;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +11,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 @Controller
 @RequestMapping("/blog") // URL매핑 http://localhost:9080/blog
@@ -28,25 +31,50 @@ public class BlogController {
 
   // ★ 1) 게시판 등록 양식
   @GetMapping("/add") // Get, http://localhost:9080/blog/add
-  public String addForm() {
+  public String addForm(Model model) {
+    model.addAttribute("addForm", new AddForm());
     return "blog/add";
   }
   
   // ★ 2) 게시판 등록 처리
   @PostMapping("/add") // add.html의 Post요청시, http://localhost:9080/blog/add
-  public String add(@RequestParam("title") String title,
-                    @RequestParam("writer") String writer,
-                    @RequestParam("bcontent") String bcontent,
+  public String add(AddForm addForm,
                     Model model,
                     RedirectAttributes redirectAttributes) {
+
+
+
+    // 제목 유효성 체크 ------------------- (Server)
+    String pattern = "^[a-zA-Z0-9ㄱ-ㅎ가-힣\\s]{1,30}$";
+    if(!Pattern.matches(pattern, addForm.getTitle())) {
+      model.addAttribute("addForm", addForm);
+      model.addAttribute("s_err_title", "특수문자 입력안됨(길이30자이내)(S)");
+      return "blog/add";
+    }
+    // 작성자 유효성 체크 ------------------- (Server)
+    pattern = "^[a-zA-Z0-9ㄱ-ㅎ가-힣_\\-]{1,6}$";
+    if(!Pattern.matches(pattern, addForm.getWriter())) {
+      model.addAttribute("addForm", addForm);
+      model.addAttribute("s_err_writer", "특문 '-','_'만 사용가능(길이6자이내)(S)");
+      return "blog/add";
+    }
+    // 내용 유효성 체크 ------------------- (Server)
+    pattern = "^.+$";
+    if(!Pattern.matches(pattern, addForm.getBcontent())) {
+      model.addAttribute("addForm", addForm);
+      model.addAttribute("s_err_bcontent", "1글자 이상 입력(S)");
+      return "blog/add";
+    }
+
+    // 게시글 등록
     Blog blog = new Blog();
-    blog.setTitle(title);
-    blog.setWriter(writer);
-    blog.setBcontent(bcontent);
+    blog.setTitle(addForm.getTitle());
+    blog.setWriter(addForm.getWriter());
+    blog.setBcontent(addForm.getBcontent());
 
     Long blogId = blogSVC.save(blog);
 
-//    // ★ 2-2) 게시판 조회 -> 새로고침시 POST 요청이 계속 되어 아래와 같이
+//    // ★ 2-2) 게시판 조회 -> 새로고침 시 POST 요청이 계속 되어 아래와 같이
 //    Optional<Blog> findedBlog = blogSVC.findByID(blogId);
 //    blog = findedBlog.orElseThrow();
 //    model.addAttribute("blog", blog);
@@ -98,14 +126,30 @@ public class BlogController {
   // ★ 8) 수정 처리
   @PostMapping("/{bid}/edit")
   public String update(@PathVariable("bid") Long blogId,
-                       @RequestParam("title") String title,
-                       @RequestParam("bcontent") String bcontent,
-                       @RequestParam("writer") String writer,
-                       RedirectAttributes redirectAttributes) {
+                       UpdateForm updateForm,
+                       RedirectAttributes redirectAttributes,
+                       Model model) {
+
+    // 제목 유효성 체크 ------------------- (Server)
+    String pattern = "^[a-zA-Z0-9ㄱ-ㅎ가-힣\\s]{1,30}$";
+    if(!Pattern.matches(pattern, updateForm.getTitle())) {
+      model.addAttribute("blog", updateForm);
+      model.addAttribute("s_err_title", "특수문자 입력안됨(길이30자이내)(S)");
+      return "/blog/updateForm";
+    }
+    // 내용 유효성 체크 ------------------- (Server)
+    pattern = "^.+$";
+    if(!Pattern.matches(pattern, updateForm.getBcontent())) {
+      model.addAttribute("blog", updateForm);
+      model.addAttribute("s_err_bcontent", "1글자 이상 입력(S)");
+      return "/blog/updateForm";
+    }
+
+
+    // 게시글 수정
     Blog blog = new Blog();
-    blog.setTitle(title);
-    blog.setBcontent(bcontent);
-    blog.setWriter(writer);
+    blog.setTitle(updateForm.getTitle());
+    blog.setBcontent(updateForm.getBcontent());
 
     blogSVC.updateById(blogId, blog);
 

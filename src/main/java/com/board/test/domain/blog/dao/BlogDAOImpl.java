@@ -101,14 +101,12 @@ public class BlogDAOImpl implements BlogDAO {
     sql.append("update blog ");
     sql.append("set title = :title, ");
     sql.append("    bcontent = :bcontent, ");
-    sql.append("    writer = :writer, ");
     sql.append("    udate = default ");
     sql.append("where blog_id = :blogId ");
 
     SqlParameterSource param = new MapSqlParameterSource()
         .addValue("title", blog.getTitle())
         .addValue("bcontent", blog.getBcontent())
-        .addValue("writer", blog.getWriter())
         .addValue("blogId", blogId);
     int updateRowCnt = template.update(sql.toString(), param);
 

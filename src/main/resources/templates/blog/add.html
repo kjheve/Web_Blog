@@ -10,38 +10,41 @@
 
 <body>
   <div class="main-wrap">
-    <h3>게시물 작성</h3>
-    <form action="/blog/add" method="POST">
+    <h3 th:text="#{title.blog.add}">게시글 작성</h3>
+    <form action="/blog/add" method="POST" th:object="${addForm}">
       <div class="writer-wrap">
         <div>
-          <label for="title">제목</label>
-          <input id="title" name="title" type="text" placeholder="한,영,숫자(30자이내)" required>
-          <span id="errTitle" class="err-msg">errTitle</span>
+          <label for="title" th:text="#{label.blog.title}">제목</label>
+          <input id="title" name="title" type="text" placeholder="한,영,숫자(30자이내)" th:value="*{title}">
+          <span id="errTitle" class="err-msg">errTitle(Client)</span> <!--/* Clienct측 에러 */-->
+          <span class="err-msg" th:if="${s_err_title != ''}" th:class="'err-msg on'" th:text="${s_err_title}">errTitle(Server)</span> <!--/* Server측 에러 */-->
         </div>
         <div>
-          <span id="errWriter" class="err-msg">errWriter</span>
-          <label for="writer">작성자</label>
-          <input id="writer" name="writer" type="text" placeholder="한,영,숫자,'_','-'(6자이내)" required>
+          <span id="errWriter" class="err-msg">errWriter(Client)</span> <!--/* Clienct측 에러 */-->
+          <span class="err-msg" th:if="${s_err_writer != ''}" th:class="'err-msg on'" th:text="${s_err_writer}">errWriter(Server)</span> <!--/* Server측 에러 */-->
+          <label for="writer" th:text="#{label.blog.writer}">작성자</label>
+          <input id="writer" name="writer" type="text" placeholder="한,영,숫자,'_','-'(6자이내)" th:value="*{writer}">
         </div>
       </div>
       <div>
         <div>
-          <label for="bcontent">내용</label>
-          <span id="errBcontent" class="err-msg">errBcontent</span>
+          <label for="bcontent" th:text="#{label.blog.bcontent}">내용</label>
+          <span id="errBcontent" class="err-msg">errBcontent(Client)</span> <!--/* Clienct측 에러 */-->
+          <span class="err-msg" th:if="${s_err_bcontent != ''}" th:class="'err-msg on'" th:text="${s_err_bcontent}">errBcontent(Server)</span> <!--/* Server측 에러 */-->
         </div>
-        <textarea name="bcontent" id="bcontent" rows="10" placeholder="내용 입력" required></textarea>
+        <textarea name="bcontent" id="bcontent" rows="10" placeholder="내용 입력"  th:value="*{bcontent}"></textarea>
       </div>
       <div class="btn-wrap">
-        <input type="button" value="목록" onclick="location.href='/blog'">
-        <input type="submit" value="저장">
-        <input type="reset" value="취소">
+        <input type="button" value="목록" th:value="#{button.list}" onclick="location.href='/blog'">
+        <input type="submit" value="저장" th:value="#{button.save}">
+        <input type="reset" value="취소" th:value="#{button.cancel}">
       </div>
     </form>
   </div>
 </body>
 
 <script>
-// 제목 유효성 검사------------------------------------------------
+// 제목 유효성 검사------------------------------------------------ (Client)
   title.addEventListener('focus', evt => {
     evt.target.style.backgroundColor = 'lightyellow';
   });
@@ -54,13 +57,13 @@
       errTitle.textContent = '';
     } else {
       errTitle.classList.add('on');
-      errTitle.textContent = '특수문자 입력안됨(길이30자이내)';
+      errTitle.textContent = '특수문자 입력안됨(길이30자이내)(C)';
       // 수정해야 빠져나오게 하기
-      evt.target.focus();
-      evt.target.select();
+      // evt.target.focus();
+      // evt.target.select();
     }
   });
-  // 작성자 유효성 검사------------------------------------------------
+  // 작성자 유효성 검사------------------------------------------------ (Client)
   writer.addEventListener('focus', evt => {
     evt.target.style.backgroundColor = 'lightyellow';
   });
@@ -73,30 +76,30 @@
       errWriter.textContent = '';
     } else {
       errWriter.classList.add('on');
-      errWriter.textContent = '특문 \'-\',\'_\'만 사용가능(길이6자이내)';
+      errWriter.textContent = '특문 \'-\',\'_\'만 사용가능(길이6자이내)(C)';
       // 수정해야 빠져나오게 하기
-      evt.target.focus();
-      evt.target.select();
+      // evt.target.focus();
+      // evt.target.select();
     }
   });
   
-  // 작성자 유효성 검사------------------------------------------------
+  // 내용 유효성 검사------------------------------------------------ (Client)
   bcontent.addEventListener('focus', evt => {
     evt.target.style.backgroundColor = 'lightyellow';
   });
   bcontent.addEventListener('blur', evt => {
     evt.target.style.backgroundColor = 'initial';
     // 유효성 체크 (정규표현식)
-    const pattern = /.+/;
+    const pattern = /^.+$/;
     if (pattern.test(evt.target.value)) {
       errBcontent.classList.remove('on');
       errBcontent.textContent = '';
     } else {
       errBcontent.classList.add('on');
-      errBcontent.textContent = '1글자 이상 입력';
+      errBcontent.textContent = '1글자 이상 입력(C)';
       // 수정해야 빠져나오게 하기
-      evt.target.focus();
-      evt.target.select();
+      // evt.target.focus();
+      // evt.target.select();
     }
   });
 
