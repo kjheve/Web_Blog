@@ -59,10 +59,10 @@ public class BlogController {
       return "blog/add";
     }
     // 내용 유효성 체크 ------------------- (Server)
-    pattern = "^.+$";
+    pattern = "^.{2,}$";
     if(!Pattern.matches(pattern, addForm.getBcontent())) {
       model.addAttribute("addForm", addForm);
-      model.addAttribute("s_err_bcontent", "1글자 이상 입력(S)");
+      model.addAttribute("s_err_bcontent", "2글자 이상 입력(S)");
       return "blog/add";
     }
 
@@ -138,10 +138,10 @@ public class BlogController {
       return "/blog/updateForm";
     }
     // 내용 유효성 체크 ------------------- (Server)
-    pattern = "^.+$";
+    pattern = "^.{2,}$";
     if(!Pattern.matches(pattern, updateForm.getBcontent())) {
       model.addAttribute("blog", updateForm);
-      model.addAttribute("s_err_bcontent", "1글자 이상 입력(S)");
+      model.addAttribute("s_err_bcontent", "2글자 이상 입력(S)");
       return "/blog/updateForm";
     }
 

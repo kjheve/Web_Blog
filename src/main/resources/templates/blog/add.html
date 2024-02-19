@@ -59,8 +59,8 @@
       errTitle.classList.add('on');
       errTitle.textContent = '특수문자 입력안됨(길이30자이내)(C)';
       // 수정해야 빠져나오게 하기
-      // evt.target.focus();
-      // evt.target.select();
+      evt.target.focus();
+      evt.target.select();
     }
   });
   // 작성자 유효성 검사------------------------------------------------ (Client)
@@ -78,8 +78,8 @@
       errWriter.classList.add('on');
       errWriter.textContent = '특문 \'-\',\'_\'만 사용가능(길이6자이내)(C)';
       // 수정해야 빠져나오게 하기
-      // evt.target.focus();
-      // evt.target.select();
+      evt.target.focus();
+      evt.target.select();
     }
   });
   
@@ -90,16 +90,16 @@
   bcontent.addEventListener('blur', evt => {
     evt.target.style.backgroundColor = 'initial';
     // 유효성 체크 (정규표현식)
-    const pattern = /^.+$/;
+    const pattern = /^.{2,}$/;
     if (pattern.test(evt.target.value)) {
       errBcontent.classList.remove('on');
       errBcontent.textContent = '';
     } else {
       errBcontent.classList.add('on');
-      errBcontent.textContent = '1글자 이상 입력(C)';
+      errBcontent.textContent = '2글자 이상 입력(C)';
       // 수정해야 빠져나오게 하기
-      // evt.target.focus();
-      // evt.target.select();
+      evt.target.focus();
+      evt.target.select();
     }
   });
 
